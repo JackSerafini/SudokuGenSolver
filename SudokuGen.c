@@ -9,8 +9,21 @@
 // Obv I need to check if the number which is about to be used it is already present inside the smaller 3x3 grid, in the row or in the column 
 // Let's say that i is the index for rows and j is the index for columns, for consistency
 
-int N = 9; // number of columns and rows
-int mat[9][9];
+// 1st: Create the grid
+// 2nd: Create all the checks for the numbers that need to be put into the grid (done?)
+// 3rd: Insert all the numbers
+// 4th: Remove K numbers from the grid
+
+
+// Definition of the number of rows and columns of the matrix
+#define ROWS 9 
+#define COLUMNS 9
+int mat[ROWS][COLUMNS];
+int N = 9;
+
+
+bool CheckTOT();
+void FillSudoku();
 
 
 int main(void){
@@ -21,53 +34,121 @@ int main(void){
 
 // Function to check if the number is not used in the row
 bool NotUsedInRow(int number, int row){
-    bool check = true;
-    for(int j=1; j<=N; j++){
+    //bool check = true;
+    for(int j=1; j<=COLUMNS; j++){
         if(number == mat[row][j])
-            check = false;
+            //check = false;
+            return false;
     }
-    return check;
+    //return check;
+    return true;
 }
 
 // Function to check if the number is not used in the column
 bool NotUsedInColumn(int number, int column){
-    bool check = true;
-    for(int i=1; i<=N; i++){
+    //bool check = true;
+    for(int i=1; i<=ROWS; i++){
         if(number == mat[i][column])
-            check = false;
+            //check = false;
+            return false;
     }
-    return check;
+    //return check;
+    return true;
 }
 
 // Function to check if the number is not used in the 3x3 grid
 // FOr now I've just added the diagonal grids, even though it sounds strange to me that I'd have to add all nine of them manually
 bool NotUsedIn3x3Grid(int number, int row, int column){
-    bool check = true;
+    //bool check = true;
     if(row >= 1 && row <= 3 && column >= 1 && column <= 3){
         for(int i=1; i<=3; i++){
             for(int j=1; j<=3; j++){
                 if(number == mat[i][j])
-                    check = false;
+                    //check = false;
+                    return false;
             }
         }
     }
+    if(row >= 1 && row <= 3 && column >= 4 && column <= 6){
+        for(int i=1; i<=3; i++){
+            for(int j=4; j<=6; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    if(row >= 1 && row <= 3 && column >= 7 && column <= 9){
+        for(int i=1; i<=3; i++){
+            for(int j=7; j<=9; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    // Centre-Left Grid
+    if(row >= 4 && row <= 6 && column >= 1 && column <= 3){
+        for(int i=4; i<=6; i++){
+            for(int j=1; j<=3; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    // Centre Grid
     if(row >= 4 && row <= 6 && column >= 4 && column <= 6){
         for(int i=4; i<=6; i++){
             for(int j=4; j<=6; j++){
                 if(number == mat[i][j])
-                    check = false;
+                    //check = false;
+                    return false;
             }
         }
     }
+    // Centre-Right Grid
+    if(row >= 4 && row <= 6 && column >= 7 && column <= 9){
+        for(int i=4; i<=6; i++){
+            for(int j=7; j<=9; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    // Bottom-Left Grid
+    if(row >= 7 && row <= 9 && column >= 1 && column <= 3){
+        for(int i=7; i<=9; i++){
+            for(int j=1; j<=3; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    //Bottom-Centre Grid
+    if(row >= 7 && row <= 9 && column >= 4 && column <= 6){
+        for(int i=7; i<=9; i++){
+            for(int j=4; j<=6; j++){
+                if(number == mat[i][j])
+                    //check = false;
+                    return false;
+            }
+        }
+    }
+    // Bottom-Right Grid
     if(row >= 7 && row <= 9 && column >= 7 && column <= 9){
         for(int i=7; i<=9; i++){
             for(int j=7; j<=9; j++){
                 if(number == mat[i][j])
-                    check = false;
+                    //check = false;
+                    return false;
             }
         }
     }
-    return check;
+    //return check;
+    return true;
 }
 
 // Sum of all the checks
@@ -79,9 +160,17 @@ bool CheckTOT(int number, int row, int column){
 
 // Function to fill the grid
 void FillSudoku(int mat){
+    srand(time(NULL));
     int number;
-    for(int i=0; i<N; i++){
-        for(int j=0; j<N; j++){
+    for(int i=0; i<ROWS; i++){
+        for(int j=0; j<COLUMNS; j++){
+            int flag = false;
+            while(flag == false){
+                int randNumber = (rand() % 9) + 1;
+                if(CheckTOT(randNumber, i, j) == true) 
+                    mat[&i][&j] = randNumber;
+                    flag = true;
+            }
         }
     }
     return;
